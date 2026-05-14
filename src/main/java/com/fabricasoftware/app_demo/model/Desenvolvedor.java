@@ -9,14 +9,12 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
-@NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
 @ToString(callSuper = false)
 @Entity
@@ -35,6 +33,9 @@ public class Desenvolvedor extends EntidadeGenerica<Long> {
     @OneToMany(mappedBy = "responsavel", fetch = FetchType.LAZY)
     private List<Ticket> ticketsResponsaveis = new ArrayList<>();
 
+    public Desenvolvedor(){
+        super(null);
+    }
     public Desenvolvedor(Long id, String especialidades, String email, Pessoa pessoa) {
         super(id);
         this.especialidades = especialidades;

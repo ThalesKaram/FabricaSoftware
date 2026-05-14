@@ -6,14 +6,12 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
-@NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
 @ToString(callSuper = false)
 @Entity
@@ -26,6 +24,10 @@ public class Pessoa extends EntidadeGenerica<Long> {
     @ToString.Exclude
     @OneToMany(mappedBy = "criador", fetch = FetchType.LAZY)
     private List<Ticket> ticketsCriados = new ArrayList<>();
+
+    public Pessoa(){
+        super(null);
+    }
 
     public Pessoa(Long id, String nome, Long idade) {
         super(id);

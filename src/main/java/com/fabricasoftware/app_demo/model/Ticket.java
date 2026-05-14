@@ -9,11 +9,9 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Data
-@NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
 @ToString(callSuper = false)
 @Entity
@@ -36,6 +34,10 @@ public class Ticket extends EntidadeGenerica<Long> {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "criador_id")
     private Pessoa criador;
+
+    public Ticket(){
+        super(null);
+    }
 
     public Ticket(Long id, String titulo, String descricao, Long prioridade, EstadoTicket estado,
             Desenvolvedor responsavel, Pessoa criador) {
