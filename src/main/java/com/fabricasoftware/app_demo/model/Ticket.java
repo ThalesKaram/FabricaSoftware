@@ -26,12 +26,12 @@ public class Ticket extends EntidadeGenerica<Long> {
     private EstadoTicket estado;
 
     @ToString.Exclude
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "responsavel_id")
     private Desenvolvedor responsavel;
 
     @ToString.Exclude
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "criador_id")
     private Pessoa criador;
 

@@ -35,19 +35,26 @@ public class TicketService {
                 .orElseThrow(() -> new RuntimeException("Ticket não encontrado com id: " + id));
     }
 
-    public Ticket cadastrar(String titulo, String descricao, Long prioridade, Long criadorId) {
+    public Ticket cadastrar(String titulo, String descricao, Long prioridade, Long criadorId, Long responsavelId) {
         Pessoa criador = null;
         if (criadorId != null) {
             criador = pessoaRepository.findById(criadorId)
                     .orElseThrow(() -> new RuntimeException("Criador não encontrado com id: " + criadorId));
         }
+
+        Desenvolvedor responsavel = null;
+        if (responsavelId != null) {
+            responsavel = desenvolvedorRepository.findById(responsavelId)
+                    .orElseThrow(() -> new RuntimeException("Responsável não encontrado com id: " + responsavelId));
+        }
+
         Ticket ticket = new Ticket(null, titulo, descricao,
                 prioridade != null ? prioridade : 1L,
-                EstadoTicket.ABERTO, null, criador);
+                EstadoTicket.ABERTO, responsavel, criador);
         return ticketRepository.save(ticket);
     }
 
-    public Ticket atualizar(Long id, String titulo, String descricao, Long prioridade, String estadoStr, Long responsavelId) {
+    public Ticket atualizar(Long id, String titulo, String descricao, Long prioridade, String estadoStr, Long criadorId, Long responsavelId) {
         Ticket ticket = buscarPorId(id);
         ticket.setTitulo(titulo);
         ticket.setDescricao(descricao);
@@ -57,9 +64,15 @@ public class TicketService {
             ticket.setEstado(EstadoTicket.valueOf(estadoStr));
         }
 
+        if (criadorId != null) {
+            Pessoa criador = pessoaRepository.findById(criadorId)
+                    .orElseThrow(() -> new RuntimeException("Criador não encontrado com id: " + criadorId));
+            ticket.setCriador(criador);
+        }
+
         if (responsavelId != null) {
             Desenvolvedor dev = desenvolvedorRepository.findById(responsavelId)
-                    .orElseThrow(() -> new RuntimeException("Desenvolvedor não encontrado com id: " + responsavelId));
+                    .orElseThrow(() -> new RuntimeException("Responsável não encontrado com id: " + responsavelId));
             ticket.setResponsavel(dev);
             if (ticket.getEstado() == EstadoTicket.ABERTO) {
                 ticket.setEstado(EstadoTicket.EM_ANDAMENTO);
